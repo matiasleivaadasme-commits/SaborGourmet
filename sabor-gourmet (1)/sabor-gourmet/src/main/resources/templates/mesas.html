@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mesas - Sabor Gourmet</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f5f1eb;
+            color: #292522;
+        }
+
+        .contenedor {
+            max-width: 900px;
+            margin: auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        h1 {
+            color: #80552b;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 11px 17px;
+            margin: 10px 5px 10px 0;
+            background: #80552b;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .boton:hover {
+            background: #63401f;
+        }
+
+        .tabla-contenedor {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            min-width: 600px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #292522;
+            color: white;
+        }
+
+        .boton-editar {
+            padding: 8px 12px;
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+
+            .contenedor {
+                padding: 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1>Mesas del restaurante</h1>
+
+    <p>Administración de las mesas de Sabor Gourmet.</p>
+
+    <a class="boton" th:href="@{/mesas/nueva}">
+        Registrar mesa
+    </a>
+
+    <a class="boton" th:href="@{/}">
+        Volver al inicio
+    </a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Número de mesa</th>
+                <th>Capacidad</th>
+                <th>Disponibilidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr th:each="mesa : ${mesas}">
+
+                <td th:text="${mesa.id}"></td>
+
+                <td th:text="${mesa.numero}"></td>
+
+                <td th:text="${mesa.capacidad} + ' personas'"></td>
+
+                <td th:text="${mesa.disponible ? 'Disponible' : 'No disponible'}"></td>
+
+                <td>
+                    <a class="boton boton-editar"
+                       th:href="@{/mesas/editar/{id}(id=${mesa.id})}">
+                        Editar
+                    </a>
+                </td>
+
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(mesas)}">
+                <td colspan="5">No hay mesas registradas.</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

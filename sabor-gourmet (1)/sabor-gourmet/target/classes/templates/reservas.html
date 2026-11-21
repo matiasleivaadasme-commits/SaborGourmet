@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reservas - Sabor Gourmet</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f5f1eb;
+            color: #292522;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        h1 { color: #80552b; }
+
+        .boton {
+            display: inline-block;
+            background: #80552b;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #292522;
+            color: white;
+        }
+
+        .mensaje {
+            background: #d9f2df;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .error {
+            background: #f8d7da;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .editar {
+            background: #2874a6;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .cancelar {
+            background: #a83232;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1>Reservas registradas</h1>
+
+    <p>Consulta y administra las reservas del restaurante.</p>
+
+    <div th:if="${mensaje}" class="mensaje" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <a class="boton" th:href="@{/reservas/nueva}">Nueva reserva</a>
+    <a class="boton" th:href="@{/}">Volver al inicio</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Mesa</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Personas</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr th:each="reserva : ${reservas}">
+
+                <td th:text="${reserva.id}"></td>
+                <td th:text="${reserva.cliente.nombre}"></td>
+                <td th:text="${reserva.mesa.numero}"></td>
+                <td th:text="${reserva.fecha}"></td>
+                <td th:text="${reserva.hora}"></td>
+                <td th:text="${reserva.cantidadPersonas}"></td>
+                <td th:text="${reserva.estado}"></td>
+
+                <td>
+
+                    <a th:if="${reserva.estado != 'CANCELADA'}"
+                       th:href="@{/reservas/editar/{id}(id=${reserva.id})}"
+                       class="editar">
+                        Editar
+                    </a>
+
+                    <form th:if="${reserva.estado != 'CANCELADA'}"
+                          th:action="@{/reservas/cancelar}"
+                          method="post">
+
+                        <input type="hidden" name="id"
+                               th:value="${reserva.id}">
+
+                        <button type="submit" class="cancelar">
+                            Cancelar
+                        </button>
+
+                    </form>
+
+                    <span th:if="${reserva.estado == 'CANCELADA'}">
+                        Sin acciones
+                    </span>
+
+                </td>
+
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(reservas)}">
+                <td colspan="8">Todavía no existen reservas registradas.</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

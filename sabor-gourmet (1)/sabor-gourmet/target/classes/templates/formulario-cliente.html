@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar cliente - Sabor Gourmet</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f5f1eb;
+            color: #292522;
+        }
+
+        .contenedor {
+            max-width: 550px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000012;
+        }
+
+        h1 { color: #80552b; }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button, .boton {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 12px 20px;
+            background: #80552b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1>Registrar cliente</h1>
+    <p>Ingresa los datos del nuevo cliente.</p>
+
+    <form th:action="@{/clientes/guardar}" method="post">
+
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre"
+               maxlength="100" required>
+
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email"
+               maxlength="120" required>
+
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono"
+               maxlength="20" required>
+
+        <button type="submit">Guardar cliente</button>
+        <a class="boton" th:href="@{/clientes}">Volver</a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

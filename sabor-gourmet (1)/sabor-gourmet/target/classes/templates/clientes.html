@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes - Sabor Gourmet</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f5f1eb;
+            color: #292522;
+        }
+
+        .contenedor {
+            max-width: 900px;
+            margin: auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        h1 { color: #80552b; }
+
+        .boton {
+            display: inline-block;
+            padding: 11px 17px;
+            margin: 10px 5px 10px 0;
+            background: #80552b;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #292522;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+<div class="contenedor">
+
+    <h1>Clientes registrados</h1>
+    <p>Administración de clientes del restaurante.</p>
+
+    <a class="boton" th:href="@{/clientes/nuevo}">Registrar cliente</a>
+    <a class="boton" th:href="@{/}">Volver al inicio</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Correo electrónico</th>
+                <th>Teléfono</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="cliente : ${clientes}">
+                <td th:text="${cliente.id}"></td>
+                <td th:text="${cliente.nombre}"></td>
+                <td th:text="${cliente.email}"></td>
+                <td th:text="${cliente.telefono}"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(clientes)}">
+                <td colspan="4">No hay clientes registrados.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

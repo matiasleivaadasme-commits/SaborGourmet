@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Formulario de mesa - Sabor Gourmet</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f5f1eb;
+            color: #292522;
+        }
+
+        .contenedor {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000012;
+        }
+
+        h1 {
+            color: #80552b;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 12px 18px;
+            margin-top: 22px;
+            background: #80552b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .volver {
+            background: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1 th:text="${mesa.id == null ? 'Registrar nueva mesa' : 'Editar mesa'}">
+        Registrar nueva mesa
+    </h1>
+
+    <p>Ingresa los datos de la mesa del restaurante.</p>
+
+    <form th:action="${mesa.id == null ? '/mesas/guardar' : '/mesas/actualizar'}"
+          method="post">
+
+        <input type="hidden" name="id" th:if="${mesa.id != null}"
+               th:value="${mesa.id}">
+
+        <label for="numero">Número de mesa:</label>
+
+        <input type="number" id="numero" name="numero"
+               min="1" th:value="${mesa.numero}" required>
+
+        <label for="capacidad">Capacidad de personas:</label>
+
+        <input type="number" id="capacidad" name="capacidad"
+               min="1" th:value="${mesa.capacidad}" required>
+
+        <label for="disponible">Disponibilidad:</label>
+
+        <select id="disponible" name="disponible">
+
+            <option value="true"
+                    th:selected="${mesa.disponible}">
+                Disponible
+            </option>
+
+            <option value="false"
+                    th:selected="${!mesa.disponible}">
+                No disponible
+            </option>
+
+        </select>
+
+        <button type="submit" class="boton"
+                th:text="${mesa.id == null ? 'Guardar mesa' : 'Actualizar mesa'}">
+            Guardar mesa
+        </button>
+
+        <a th:href="@{/mesas}" class="boton volver">
+            Volver
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Formulario de reserva - Sabor Gourmet</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f5f1eb;
+            color: #292522;
+        }
+
+        .contenedor {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000012;
+        }
+
+        h1 { color: #80552b; }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button, .boton {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 12px 20px;
+            background: #80552b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .error {
+            background: #f8d7da;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1 th:text="${reserva.id == null ? 'Registrar nueva reserva' : 'Editar reserva'}">
+        Registrar nueva reserva
+    </h1>
+
+    <p>Completa los datos de la reserva.</p>
+
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <form th:action="${reserva.id == null ? '/reservas/guardar' : '/reservas/actualizar'}"
+          method="post">
+
+        <input type="hidden" name="id" th:if="${reserva.id != null}"
+               th:value="${reserva.id}">
+
+        <label for="clienteId">Cliente</label>
+
+        <select id="clienteId" name="clienteId" required>
+            <option value="">Selecciona un cliente</option>
+
+            <option th:each="cliente : ${clientes}"
+                    th:value="${cliente.id}"
+                    th:text="${cliente.nombre}"
+                    th:selected="${reserva.cliente != null and reserva.cliente.id == cliente.id}">
+            </option>
+        </select>
+
+        <label for="mesaId">Mesa</label>
+
+        <select id="mesaId" name="mesaId" required>
+            <option value="">Selecciona una mesa</option>
+
+            <option th:each="mesa : ${mesas}"
+                    th:value="${mesa.id}"
+                    th:text="${'Mesa ' + mesa.numero + ' - Capacidad: ' + mesa.capacidad}"
+                    th:selected="${reserva.mesa != null and reserva.mesa.id == mesa.id}"
+                    th:if="${mesa.disponible or (reserva.mesa != null and reserva.mesa.id == mesa.id)}">
+            </option>
+        </select>
+
+        <label for="fecha">Fecha</label>
+
+        <input type="date" id="fecha" name="fecha"
+               th:value="${reserva.fecha}" required>
+
+        <label for="hora">Hora</label>
+
+        <input type="time" id="hora" name="hora"
+               th:value="${reserva.hora}" required>
+
+        <label for="cantidadPersonas">Cantidad de personas</label>
+
+        <input type="number" id="cantidadPersonas"
+               name="cantidadPersonas" min="1"
+               th:value="${reserva.cantidadPersonas}" required>
+
+        <button type="submit"
+                th:text="${reserva.id == null ? 'Guardar reserva' : 'Actualizar reserva'}">
+            Guardar reserva
+        </button>
+
+        <a class="boton" th:href="@{/reservas}">Volver</a>
+
+    </form>
+
+</div>
+
+</body>
+</html>
